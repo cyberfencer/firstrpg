@@ -1,28 +1,43 @@
 extends CharacterBody2D
 
-
-const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
-
-# Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
-
+var speed = 300.0
+var new_direction: Vector2
+@onready var animated_sprite = $animated_sprite2d
+var animation
 
 func _physics_process(delta):
-	# Add the gravity.
-	if not is_on_floor():
-		velocity.y += gravity * delta
+	var direction: Vector2 = Vector2.ZERO
+	direction.x = Input.get_action_strength("right") - Input.get_action_strength("left")
+	direction.y = Input.get_action_strength("down") - Input.get_action_strength("up")
 
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+	if abs(direction.x) == 1 and abs(direction.y) == 1:
+		direction = direction.normalized()
 
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction = Input.get_axis("ui_left", "ui_right")
-	if direction:
-		velocity.x = direction * SPEED
+	var movement = direction * speed * delta
+	move_and_collide(movement)
+	playerDirection(direction)
+
+func playerDirection(direction: Vector2):
+	if direction != Vector2.ZERO:
+		new_direction = direction
+		animation = "walk_" + returnedDirection(new_direction)
+		animated_sprite.play(animation)
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+		animation = "idle_" + returnedDirection(new_direction)
+		animated_sprite.play(animation)
 
-	move_and_slide()
+func returnedDirection(direction: Vector2) -> String:
+	var normalized_direction = direction.normalized()
+	var default_return = "down"
+
+	if normalized_direction.y > 0:
+		return "down"
+	elif normalized_direction.y < 0:
+		return "up"
+	elif normalized_direction.x > 0:
+		animated_sprite.flip_h = false
+		return "right"
+	elif normalized_direction.x < 0:
+		animated_sprite.flip_h = true
+		return "right"  # left
+	return default_return
