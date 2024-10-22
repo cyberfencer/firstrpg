@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 var speed = 300.0
 var new_direction: Vector2
-@onready var animated_sprite = $animated_sprite2d
+@onready var animated_sprite = $/AnimatedSprite2D
 var animation
 
 func _physics_process(delta):
