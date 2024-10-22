@@ -65,5 +65,4 @@ func _input(event):
 
 
 func _on_animated_sprite_2d_animation_finished():
-	print("finsih attacking")
 	is_attacking = false
