@@ -1,12 +1,12 @@
 extends CharacterBody2D
 
-@export var speed = 200
+@export var speed = 100
 @onready var animated_sprite = $AnimatedSprite2D
 var new_direction: Vector2 = Vector2.ZERO
 var animation: String
 var is_attacking = false
 var is_running = false
-var base_speed = speed
+var base_speed = 100
 var base_animation_speed = 1.0  # Default animation speed
 var run_animation_speed = 2.0   # Animation speed while running
 
@@ -66,13 +66,12 @@ func run():
 	if not is_running:
 		is_running = true
 		speed = base_speed * 2
-		animated_sprite.animation_speed = run_animation_speed
-		print("Running: Speed =", speed, "Animation Speed =", animated_sprite.animation_speed)
+		animated_sprite.speed_scale = run_animation_speed
 
 func stop_running():
 	if is_running:
 		is_running = false
 		speed = base_speed
-		animated_sprite.animation_speed = base_animation_speed
-		print("Stopped Running: Speed =", speed, "Animation Speed =", animated_sprite.animation_speed)
+		animated_sprite.speed_scale = base_animation_speed
+
 
