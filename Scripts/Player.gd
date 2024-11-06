@@ -36,10 +36,29 @@ func returnedDirection(direction: Vector2):
 	var normalized_direction = direction.normalized()
 	var default_return = "down"
 	
-	if normalized_direction.y > 0:
-		return "down"
-	elif normalized_direction.y < 0:
-		return "up"
+	if normalized_direction.y < 0 and abs(normalized_direction.x) > 0:
+		return "upangle"
+	elif normalized_direction.y > 0:
+		return "down"  # Use a default or existing animation name
+	elif normalized_direction.x > 0:
+		animated_sprite.flip_h = false
+		return "side"
+	elif normalized_direction.x < 0:
+		animated_sprite.flip_h = true
+		return "side"
+	
+	return default_return
+
+	
+	if normalized_direction.y < 0 and abs(normalized_direction.x) > 0:
+		return "upangle"
+	elif normalized_direction.y > 0:
+		if normalized_direction.x > 0:
+			return "downright"
+		elif normalized_direction.x < 0:
+			return "downleft"
+		else:
+			return "down"
 	elif normalized_direction.x > 0:
 		animated_sprite.flip_h = false
 		return "side"
@@ -73,5 +92,3 @@ func stop_running():
 		is_running = false
 		speed = base_speed
 		animated_sprite.speed_scale = base_animation_speed
-
-
