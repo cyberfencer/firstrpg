@@ -26,7 +26,7 @@ func _physics_process(delta):
 func playerDirection(direction: Vector2):
 	if direction != Vector2.ZERO:
 		new_direction = direction
-		animation = "walk_" + returnedDirection(new_direction)
+		animation = "walk_" + returnedDirection(new_direction) + "angle"
 		animated_sprite.play(animation)
 	else:
 		animation = "idle_" + returnedDirection(direction)
